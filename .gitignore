@@ -1,0 +1,23 @@
+# Configuración local de Android Studio (cada integrante tiene la suya)
+*.iml
+/.idea/
+/local.properties
+
+# Archivos generados al compilar: se recrean solos
+.gradle/
+.kotlin/
+build/
+/captures/
+.externalNativeBuild/
+.cxx/
+
+# APK/AAB compilados y llaves de firma (nunca al repositorio)
+*.apk
+*.aab
+*.jks
+*.keystore
+
+# Archivos del sistema operativo y registros
+.DS_Store
+Thumbs.db
+*.log

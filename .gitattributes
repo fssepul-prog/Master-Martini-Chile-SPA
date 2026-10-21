@@ -1,0 +1,15 @@
+# Git normaliza los finales de línea de los archivos de texto.
+* text=auto
+
+# Scripts de Linux/Mac: siempre LF, o no se pueden ejecutar.
+gradlew text eol=lf
+*.sh text eol=lf
+
+# Scripts de Windows: siempre CRLF.
+*.bat text eol=crlf
+
+# Binarios: no tocar.
+*.png binary
+*.jpg binary
+*.webp binary
+*.jar binary
