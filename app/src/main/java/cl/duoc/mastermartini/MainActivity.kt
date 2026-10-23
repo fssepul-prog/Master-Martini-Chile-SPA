@@ -19,8 +19,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             // Se crea aquí porque "letra grande" afecta al tema de toda la app.
             val preferenciasViewModel: PreferenciasViewModel = viewModel()
-            val preferencias by preferenciasViewModel.estado.collectAsState()
-            MasterMartiniTheme(letraGrande = preferencias.preferencias.letraGrande) {
+            val letraGrande by preferenciasViewModel.letraGrande.collectAsState()
+            MasterMartiniTheme(letraGrande = letraGrande) {
                 AppNavigation(anchoVentana = anchoVentana(), preferenciasViewModel = preferenciasViewModel)
             }
         }

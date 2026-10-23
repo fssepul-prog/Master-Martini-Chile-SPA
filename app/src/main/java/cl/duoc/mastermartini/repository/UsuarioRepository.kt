@@ -40,4 +40,9 @@ class UsuarioRepository(private val context: Context) {
             p[Claves.TIPO] = u.tipoNegocio
         }
     }
+
+    companion object {
+        // Opciones del campo "Tipo de negocio" del registro.
+        val tiposDeNegocio = listOf("Pastelería", "Panadería", "Chocolatería", "Heladería", "Restaurante o casino", "Otro")
+    }
 }

@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.MenuBook
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material.icons.outlined.School
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -21,9 +21,9 @@ import cl.duoc.mastermartini.model.TipoContenido
 @Composable
 fun ImagenContenido(tipo: TipoContenido, modifier: Modifier = Modifier) {
     val icono = when (tipo) {
-        TipoContenido.Receta -> Icons.AutoMirrored.Outlined.MenuBook
-        TipoContenido.Video -> Icons.Outlined.PlayCircle
-        TipoContenido.Curso -> Icons.Outlined.School
+        TipoContenido.Receta -> Icons.AutoMirrored.Filled.List
+        TipoContenido.Video -> Icons.Default.PlayArrow
+        TipoContenido.Curso -> Icons.Default.Star
     }
     Box(
         modifier = modifier.clip(RoundedCornerShape(12.dp)).background(MaterialTheme.colorScheme.secondaryContainer),

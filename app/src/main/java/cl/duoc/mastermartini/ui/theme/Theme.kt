@@ -20,7 +20,7 @@ private val Colores = lightColorScheme(
     surface = Fondo,
     onSurface = Texto,
     onSurfaceVariant = TextoSecundario,
-    error = Error,
+    error = ColorError,
 )
 
 // Textos más grandes que el default: el caso pide accesibilidad para usuarios mayores de 50 años.

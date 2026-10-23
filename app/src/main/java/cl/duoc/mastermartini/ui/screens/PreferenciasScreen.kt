@@ -1,4 +1,4 @@
-package cl.duoc.mastermartini.ui.screens.ajustes
+package cl.duoc.mastermartini.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -22,7 +22,7 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
@@ -52,7 +52,7 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun AjustesScreen(viewModel: PreferenciasViewModel, onIr: (Rutas) -> Unit) {
+fun PreferenciasScreen(viewModel: PreferenciasViewModel, onIr: (Rutas) -> Unit) {
     val estado by viewModel.estado.collectAsState()
     val pref = estado.preferencias
 
@@ -73,7 +73,7 @@ fun AjustesScreen(viewModel: PreferenciasViewModel, onIr: (Rutas) -> Unit) {
 
     Scaffold(
         topBar = { BarraSuperior("Preferencias") },
-        bottomBar = { BarraInferior(Rutas.Ajustes, onIr) },
+        bottomBar = { BarraInferior(Rutas.Preferencias, onIr) },
     ) { padding ->
         if (estado.cargando) {
             Box(Modifier.padding(padding).fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
@@ -122,7 +122,7 @@ fun AjustesScreen(viewModel: PreferenciasViewModel, onIr: (Rutas) -> Unit) {
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Icon(Icons.Outlined.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                    Icon(Icons.Default.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     Text("Preferencias guardadas")
                 }
             }

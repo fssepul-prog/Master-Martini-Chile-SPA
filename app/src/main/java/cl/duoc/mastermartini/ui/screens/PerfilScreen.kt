@@ -1,4 +1,4 @@
-package cl.duoc.mastermartini.ui.screens.perfil
+package cl.duoc.mastermartini.ui.screens
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -16,12 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CameraAlt
-import androidx.compose.material.icons.outlined.PhotoLibrary
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
@@ -88,8 +84,7 @@ fun PerfilScreen(usuarioViewModel: UsuarioViewModel, preferenciasViewModel: Pref
             ImagenInteligente(foto)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
                 OutlinedButton(onClick = { galeria.launch("image/*") }, modifier = Modifier.weight(1f).height(52.dp)) {
-                    Icon(Icons.Outlined.PhotoLibrary, contentDescription = null)
-                    Text("Galería", modifier = Modifier.padding(start = 8.dp))
+                    Text("Galería")
                 }
                 Button(
                     onClick = {
@@ -99,8 +94,7 @@ fun PerfilScreen(usuarioViewModel: UsuarioViewModel, preferenciasViewModel: Pref
                     },
                     modifier = Modifier.weight(1f).height(52.dp),
                 ) {
-                    Icon(Icons.Outlined.CameraAlt, contentDescription = null)
-                    Text("Cámara", modifier = Modifier.padding(start = 8.dp))
+                    Text("Cámara")
                 }
             }
             aviso?.let { Text(it, color = MaterialTheme.colorScheme.error) }
@@ -120,9 +114,9 @@ fun PerfilScreen(usuarioViewModel: UsuarioViewModel, preferenciasViewModel: Pref
             Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("Mis intereses", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    preferencias.preferencias.intereses.forEach { AssistChip(onClick = { onIr(Rutas.Ajustes) }, label = { Text(it) }) }
+                    preferencias.preferencias.intereses.forEach { AssistChip(onClick = { onIr(Rutas.Preferencias) }, label = { Text(it) }) }
                 }
-                TextButton(onClick = { onIr(Rutas.Ajustes) }) {
+                TextButton(onClick = { onIr(Rutas.Preferencias) }) {
                     Text(if (preferencias.preferencias.intereses.isEmpty()) "Elegir intereses" else "Editar intereses")
                 }
             }

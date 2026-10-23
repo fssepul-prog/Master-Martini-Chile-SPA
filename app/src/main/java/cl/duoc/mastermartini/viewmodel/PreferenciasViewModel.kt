@@ -19,11 +19,17 @@ class PreferenciasViewModel(app: Application) : AndroidViewModel(app) {
     private val _estado = MutableStateFlow(PreferenciasUiState())
     val estado: StateFlow<PreferenciasUiState> = _estado
 
+    // "Letra grande" ya guardada: es la que usa el tema de toda la app (no cambia hasta presionar Guardar).
+    private val _letraGrande = MutableStateFlow(false)
+    val letraGrande: StateFlow<Boolean> = _letraGrande
+
     val temas = PreferenciasRepository.temasDeInteres
 
     init {
         viewModelScope.launch {
-            _estado.value = PreferenciasUiState(cargando = false, preferencias = repo.preferencias.first())
+            val guardadas = repo.preferencias.first()
+            _estado.value = PreferenciasUiState(cargando = false, preferencias = guardadas)
+            _letraGrande.value = guardadas.letraGrande
         }
     }
 
@@ -37,6 +43,7 @@ class PreferenciasViewModel(app: Application) : AndroidViewModel(app) {
         val actuales = _estado.value.preferencias
         viewModelScope.launch {
             repo.guardar(actuales)
+            _letraGrande.value = actuales.letraGrande
             _estado.update { it.copy(guardado = true) }
         }
     }

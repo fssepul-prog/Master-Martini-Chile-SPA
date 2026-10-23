@@ -1,4 +1,4 @@
-package cl.duoc.mastermartini.ui.screens.inicio
+package cl.duoc.mastermartini.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
 // Guía 10: TopAppBar + NavigationDrawer. Los datos vienen del ContenidoViewModel.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InicioScreen(viewModel: ContenidoViewModel, onIr: (Rutas) -> Unit, onAbrir: (Contenido) -> Unit) {
+fun InicioScreen(viewModel: ContenidoViewModel, nombre: String, onIr: (Rutas) -> Unit, onAbrir: (Contenido) -> Unit) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -88,7 +88,7 @@ fun InicioScreen(viewModel: ContenidoViewModel, onIr: (Rutas) -> Unit, onAbrir: 
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 item {
-                    Text("Hola, bienvenido", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                    Text("Hola, ${nombre.trim().substringBefore(" ").ifBlank { "bienvenido" }}", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
                     Text("¿Qué quieres aprender hoy?", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 item { CursoDestacado(viewModel.destacado, onVer = onAbrir) }

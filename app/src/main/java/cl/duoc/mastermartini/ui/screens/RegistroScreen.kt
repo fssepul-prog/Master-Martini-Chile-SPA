@@ -1,4 +1,4 @@
-package cl.duoc.mastermartini.ui.screens.registro
+package cl.duoc.mastermartini.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,15 +10,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Badge
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.ErrorOutline
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Phone
-import androidx.compose.material.icons.outlined.Store
-import androidx.compose.material.icons.outlined.Visibility
-import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
@@ -27,11 +25,11 @@ import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -49,7 +47,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import cl.duoc.mastermartini.ui.components.BarraSuperior
 import cl.duoc.mastermartini.viewmodel.UsuarioViewModel
-import cl.duoc.mastermartini.viewmodel.tiposDeNegocio
+import cl.duoc.mastermartini.repository.UsuarioRepository
 
 // Guía 11: formulario con OutlinedTextField, isError y supportingText. Toda la validación vive en el ViewModel.
 @Composable
@@ -68,21 +66,18 @@ fun RegistroScreen(viewModel: UsuarioViewModel, onRegistrado: () -> Unit) {
         ) {
             Text("Completa tus datos para recibir contenidos de tu rubro.", color = MaterialTheme.colorScheme.onSurfaceVariant)
 
-            Campo("Nombre completo", estado.nombre, viewModel::onNombre, e.nombre, Icons.Outlined.Person)
-            Campo("Correo electrónico", estado.correo, viewModel::onCorreo, e.correo, Icons.Outlined.Email, KeyboardType.Email)
-            Campo("Teléfono (+56)", estado.telefono, viewModel::onTelefono, e.telefono, Icons.Outlined.Phone, KeyboardType.Phone)
-            Campo("RUT empresa", estado.rutEmpresa, viewModel::onRut, e.rutEmpresa, Icons.Outlined.Badge, ayuda = "Ej: 76.123.456-0")
+            Campo("Nombre completo", estado.nombre, viewModel::onNombre, e.nombre, Icons.Default.Person)
+            Campo("Correo electrónico", estado.correo, viewModel::onCorreo, e.correo, Icons.Default.Email, KeyboardType.Email)
+            Campo("Teléfono (+56)", estado.telefono, viewModel::onTelefono, e.telefono, Icons.Default.Phone, KeyboardType.Phone)
+            Campo("RUT empresa", estado.rutEmpresa, viewModel::onRut, e.rutEmpresa, Icons.Default.AccountBox, ayuda = "Ej: 76.123.456-0")
             SelectorTipoNegocio(estado.tipoNegocio, viewModel::onTipoNegocio, e.tipoNegocio)
             Campo(
-                "Contraseña", estado.clave, viewModel::onClave, e.clave, Icons.Outlined.Lock, KeyboardType.Password,
+                "Contraseña", estado.clave, viewModel::onClave, e.clave, Icons.Default.Lock, KeyboardType.Password,
                 ayuda = "Mínimo 8 caracteres",
                 transformacion = if (verClave) VisualTransformation.None else PasswordVisualTransformation(),
                 accion = {
-                    IconButton(onClick = { verClave = !verClave }) {
-                        Icon(
-                            if (verClave) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
-                            contentDescription = if (verClave) "Ocultar contraseña" else "Mostrar contraseña",
-                        )
+                    TextButton(onClick = { verClave = !verClave }) {
+                        Text(if (verClave) "Ocultar" else "Ver")
                     }
                 },
             )
@@ -99,7 +94,7 @@ fun RegistroScreen(viewModel: UsuarioViewModel, onRegistrado: () -> Unit) {
             e.terminos?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium) }
 
             Button(
-                onClick = { if (viewModel.registrar()) onRegistrado() },
+                onClick = { viewModel.registrar(onRegistrado) },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
             ) { Text("Registrarme") }
         }
@@ -125,7 +120,7 @@ private fun Campo(
         leadingIcon = { Icon(icono, contentDescription = null) },
         // El ícono de error acompaña al color rojo: no depender solo del color.
         trailingIcon = accion ?: if (error != null) {
-            { Icon(Icons.Outlined.ErrorOutline, contentDescription = "Error", tint = MaterialTheme.colorScheme.error) }
+            { Icon(Icons.Default.Warning, contentDescription = "Error", tint = MaterialTheme.colorScheme.error) }
         } else null,
         isError = error != null,
         supportingText = (error ?: ayuda)?.let { { Text(it) } },
@@ -146,14 +141,14 @@ private fun SelectorTipoNegocio(valor: String, onCambio: (String) -> Unit, error
             onValueChange = {},
             readOnly = true,
             label = { Text("Tipo de negocio") },
-            leadingIcon = { Icon(Icons.Outlined.Store, contentDescription = null) },
+            leadingIcon = { Icon(Icons.Default.ShoppingCart, contentDescription = null) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = abierto) },
             isError = error != null,
             supportingText = error?.let { { Text(it) } },
             modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
         )
         ExposedDropdownMenu(expanded = abierto, onDismissRequest = { abierto = false }) {
-            tiposDeNegocio.forEach { tipo ->
+            UsuarioRepository.tiposDeNegocio.forEach { tipo ->
                 DropdownMenuItem(text = { Text(tipo) }, onClick = {
                     onCambio(tipo)
                     abierto = false

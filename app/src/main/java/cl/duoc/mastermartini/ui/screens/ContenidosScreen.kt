@@ -1,4 +1,4 @@
-package cl.duoc.mastermartini.ui.screens.contenidos
+package cl.duoc.mastermartini.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,21 +8,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -94,24 +87,6 @@ fun ContenidosScreen(
     }
 }
 
-// Teléfono: el detalle es su propia ruta; la flecha y el botón atrás del sistema vuelven a la lista.
-@Composable
-fun DetalleScreen(viewModel: ContenidoViewModel, onVolver: () -> Unit) {
-    val estado by viewModel.estado.collectAsState()
-    val contenido = estado.seleccionado
-    Scaffold(
-        topBar = {
-            BarraSuperior(contenido?.tipo?.name ?: "") {
-                IconButton(onClick = onVolver) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
-                }
-            }
-        },
-    ) { padding ->
-        if (contenido != null) DetalleContenido(contenido, Modifier.padding(padding))
-    }
-}
-
 @Composable
 private fun FilaContenido(contenido: Contenido, marcado: Boolean, onClick: () -> Unit) {
     OutlinedCard(
@@ -126,18 +101,5 @@ private fun FilaContenido(contenido: Contenido, marcado: Boolean, onClick: () ->
                 Text(contenido.detalle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
-    }
-}
-
-@Composable
-private fun DetalleContenido(contenido: Contenido, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        ImagenContenido(contenido.tipo, Modifier.fillMaxWidth().height(200.dp))
-        Text("${contenido.tipo.name.uppercase()} · ${contenido.detalle}", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
-        Text(contenido.titulo, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-        Text(contenido.descripcion)
     }
 }

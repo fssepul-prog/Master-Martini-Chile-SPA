@@ -2,18 +2,20 @@ package cl.duoc.mastermartini.navigation
 
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import cl.duoc.mastermartini.model.Contenido
-import cl.duoc.mastermartini.ui.screens.ajustes.AjustesScreen
-import cl.duoc.mastermartini.ui.screens.carga.CargaScreen
-import cl.duoc.mastermartini.ui.screens.contenidos.ContenidosScreen
-import cl.duoc.mastermartini.ui.screens.contenidos.DetalleScreen
-import cl.duoc.mastermartini.ui.screens.inicio.InicioScreen
-import cl.duoc.mastermartini.ui.screens.perfil.PerfilScreen
-import cl.duoc.mastermartini.ui.screens.registro.RegistroScreen
+import cl.duoc.mastermartini.ui.screens.PreferenciasScreen
+import cl.duoc.mastermartini.ui.screens.CargaScreen
+import cl.duoc.mastermartini.ui.screens.ContenidosScreen
+import cl.duoc.mastermartini.ui.screens.DetalleScreen
+import cl.duoc.mastermartini.ui.screens.InicioScreen
+import cl.duoc.mastermartini.ui.screens.PerfilScreen
+import cl.duoc.mastermartini.ui.screens.RegistroScreen
 import cl.duoc.mastermartini.viewmodel.ContenidoViewModel
 import cl.duoc.mastermartini.viewmodel.PreferenciasViewModel
 import cl.duoc.mastermartini.viewmodel.UsuarioViewModel
@@ -24,6 +26,7 @@ fun AppNavigation(anchoVentana: WindowWidthSizeClass, preferenciasViewModel: Pre
     // Creados una sola vez para que las pantallas compartan la misma instancia (Guía 11).
     val contenidoViewModel: ContenidoViewModel = viewModel()
     val usuarioViewModel: UsuarioViewModel = viewModel()
+    val usuario by usuarioViewModel.estado.collectAsState()
 
     // Pestañas de la barra inferior: sin copias repetidas en la pila (Guía 10).
     val irA: (Rutas) -> Unit = { destino ->
@@ -51,12 +54,12 @@ fun AppNavigation(anchoVentana: WindowWidthSizeClass, preferenciasViewModel: Pre
                 navController.navigate(Rutas.Inicio.ruta) { popUpTo(Rutas.Registro.ruta) { inclusive = true } }
             })
         }
-        composable(Rutas.Inicio.ruta) { InicioScreen(contenidoViewModel, onIr = irA, onAbrir = abrirDetalle) }
+        composable(Rutas.Inicio.ruta) { InicioScreen(contenidoViewModel, nombre = usuario.nombre, onIr = irA, onAbrir = abrirDetalle) }
         composable(Rutas.Contenidos.ruta) { ContenidosScreen(contenidoViewModel, anchoVentana, onIr = irA, onAbrir = abrirDetalle) }
         composable(Rutas.Detalle.ruta) { DetalleScreen(contenidoViewModel, onVolver = { navController.popBackStack() }) }
         composable(Rutas.Perfil.ruta) {
             PerfilScreen(usuarioViewModel, preferenciasViewModel, onIr = irA)
         }
-        composable(Rutas.Ajustes.ruta) { AjustesScreen(preferenciasViewModel, onIr = irA) }
+        composable(Rutas.Preferencias.ruta) { PreferenciasScreen(preferenciasViewModel, onIr = irA) }
     }
 }

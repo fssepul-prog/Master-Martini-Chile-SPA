@@ -54,12 +54,14 @@ class UsuarioViewModel(app: Application) : AndroidViewModel(app) {
         return errores == UsuarioErrores()
     }
 
-    // true = datos válidos y guardándose; la pantalla decide a dónde navegar.
-    fun registrar(): Boolean {
-        if (!validarFormulario()) return false
+    // Si los datos son válidos, los guarda y recién entonces avisa a la pantalla para navegar.
+    fun registrar(onRegistrado: () -> Unit) {
+        if (!validarFormulario()) return
         val datos = _estado.value
-        viewModelScope.launch { usuarios.guardar(datos) }
-        return true
+        viewModelScope.launch {
+            usuarios.guardar(datos)
+            onRegistrado()
+        }
     }
 
     fun nuevaUriParaCamara(): Uri = fotos.nuevaUriParaCamara()
@@ -72,37 +74,4 @@ class UsuarioViewModel(app: Application) : AndroidViewModel(app) {
     fun fotoDeGaleria(uri: Uri?) {
         if (uri != null) _fotoUri.value = uri
     }
-}
-
-val tiposDeNegocio = listOf("Pastelería", "Panadería", "Chocolatería", "Heladería", "Restaurante o casino", "Otro")
-
-// Reglas de validación, separadas de la UI y sin dependencias de Android para poder probarlas.
-fun validar(u: UsuarioUiState) = UsuarioErrores(
-    nombre = if (u.nombre.trim().length < 3) "Ingresa tu nombre completo" else null,
-    correo = if (!Regex("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$").matches(u.correo.trim())) "Ingresa un correo válido, ej: nombre@correo.cl" else null,
-    telefono = if (u.telefono.count(Char::isDigit) != 9) "Ingresa 9 dígitos, ej: 9 1234 5678" else null,
-    rutEmpresa = if (!rutValido(u.rutEmpresa)) "RUT inválido, ej: 76.123.456-0" else null,
-    tipoNegocio = if (u.tipoNegocio !in tiposDeNegocio) "Elige el tipo de negocio" else null,
-    clave = if (u.clave.length < 8) "Mínimo 8 caracteres" else null,
-    terminos = if (!u.aceptaTerminos) "Debes aceptar los términos" else null,
-)
-
-// Dígito verificador chileno (módulo 11).
-fun rutValido(rut: String): Boolean {
-    val limpio = rut.trim().replace(".", "").replace("-", "").uppercase()
-    if (limpio.length < 2) return false
-    val cuerpo = limpio.dropLast(1)
-    if (!cuerpo.all(Char::isDigit)) return false
-    var suma = 0
-    var factor = 2
-    for (c in cuerpo.reversed()) {
-        suma += (c - '0') * factor
-        factor = if (factor == 7) 2 else factor + 1
-    }
-    val esperado = when (val r = 11 - suma % 11) {
-        11 -> '0'
-        10 -> 'K'
-        else -> '0' + r
-    }
-    return limpio.last() == esperado
 }

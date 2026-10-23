@@ -8,5 +8,5 @@ sealed class Rutas(val ruta: String) {
     data object Contenidos : Rutas("contenidos")
     data object Detalle : Rutas("detalle")
     data object Perfil : Rutas("perfil")
-    data object Ajustes : Rutas("ajustes")
+    data object Preferencias : Rutas("preferencias")
 }
