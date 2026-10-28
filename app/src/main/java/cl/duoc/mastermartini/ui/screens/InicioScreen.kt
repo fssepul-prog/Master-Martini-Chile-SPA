@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -120,7 +121,7 @@ fun InicioScreen(viewModel: ContenidoViewModel, nombre: String, onIr: (Rutas) ->
                                 onClick = { onAbrir(receta) },
                                 modifier = Modifier.width(180.dp),
                             ) {
-                                ImagenContenido(receta.tipo, Modifier.fillMaxWidth().heightIn(min = 90.dp))
+                                ImagenContenido(receta.tipo, receta.imagen, Modifier.fillMaxWidth().height(90.dp))
                                 Column(Modifier.padding(12.dp)) {
                                     Text(receta.titulo, fontWeight = FontWeight.Bold, maxLines = 2)
                                     Text(receta.detalle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -143,6 +144,7 @@ private fun CursoDestacado(curso: Contenido, onVer: (Contenido) -> Unit) {
         ),
     ) {
         Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            ImagenContenido(curso.tipo,curso.imagen,Modifier.fillMaxWidth().height(140.dp))
             Text("CURSO DESTACADO", style = MaterialTheme.typography.labelLarge)
             Text(curso.titulo, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             Text(curso.detalle)

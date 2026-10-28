@@ -37,7 +37,6 @@ import cl.duoc.mastermartini.ui.components.BarraInferior
 import cl.duoc.mastermartini.ui.components.ImagenContenido
 import cl.duoc.mastermartini.viewmodel.ContenidoViewModel
 
-// Guía 10 (TopAppBar, NavigationBar, lista) + Guía 9 (Expanded = lista y detalle lado a lado).
 @Composable
 fun ContenidosScreen(
     viewModel: ContenidoViewModel,
@@ -94,7 +93,7 @@ private fun FilaContenido(contenido: Contenido, marcado: Boolean, onClick: () ->
         colors = if (marcado) CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.primaryContainer) else CardDefaults.outlinedCardColors(),
     ) {
         Row(Modifier.padding(10.dp), horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-            ImagenContenido(contenido.tipo, Modifier.size(72.dp))
+            ImagenContenido(contenido.tipo, contenido.imagen, Modifier.size(72.dp))
             Column(Modifier.weight(1f)) {
                 Text(contenido.tipo.name.uppercase(), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
                 Text(contenido.titulo, fontWeight = FontWeight.Bold)

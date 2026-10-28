@@ -44,16 +44,16 @@ fun DetalleScreen(viewModel: ContenidoViewModel, onVolver: () -> Unit) {
     }
 }
 
-// También lo usa ContenidosScreen en tablet, junto a la lista (Guía 9).
 @Composable
 fun DetalleContenido(contenido: Contenido, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        ImagenContenido(contenido.tipo, Modifier.fillMaxWidth().height(200.dp))
+        ImagenContenido(contenido.tipo, contenido.imagen, Modifier.fillMaxWidth().height(200.dp))
         Text("${contenido.tipo.name.uppercase()} · ${contenido.detalle}", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
         Text(contenido.titulo, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
         Text(contenido.descripcion)
     }
 }
+

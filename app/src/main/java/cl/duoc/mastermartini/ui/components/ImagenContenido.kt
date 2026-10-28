@@ -1,5 +1,10 @@
 package cl.duoc.mastermartini.ui.components
 
+
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -17,9 +22,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import cl.duoc.mastermartini.model.TipoContenido
 
-// shortcut: ícono según el tipo en vez de foto, cambiar por imágenes cuando el socio entregue material autorizado.
+
 @Composable
-fun ImagenContenido(tipo: TipoContenido, modifier: Modifier = Modifier) {
+fun ImagenContenido(tipo: TipoContenido, imagen: Int?, modifier: Modifier = Modifier) {
+    if (imagen != null) {
+        Image(
+            painter = painterResource(id = imagen),
+            contentDescription = null, // decorativa: el título ya está al lado
+            contentScale = ContentScale.Crop,
+            modifier = modifier.clip(RoundedCornerShape(12.dp)),
+        )
+        return
+    }
     val icono = when (tipo) {
         TipoContenido.Receta -> Icons.AutoMirrored.Filled.List
         TipoContenido.Video -> Icons.Default.PlayArrow
